@@ -1,0 +1,20 @@
+
+services:
+  rabbit:
+    image: rabbitmq:3-management  # Cambiado a versión estable, si la necesitas
+    container_name: rabbit_Py
+    ports:
+      - "5672:5672"     # Puerto para la comunicación AMQP
+      - "15672:15672"   # Puerto para la interfaz de administración
+    environment:
+      - RABBITMQ_DEFAULT_USER=GabrielP
+      - RABBITMQ_DEFAULT_PASS=2146
+    volumes:
+      - ../rabbitmq/data/:/var/lib/rabbitmq/   # Persistencia de datos
+      - ../rabbitmq/log/:/var/log/rabbitmq    # Persistencia de logs
+    networks:
+      - rabbitmq_network
+
+networks:
+  rabbitmq_network:
+    driver: bridge
