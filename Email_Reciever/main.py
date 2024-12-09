@@ -1,17 +1,13 @@
-from rabbitmq_service import RabbitMQService
-from email_receiver import EmailReceiver
-from handlers import email_handler
+from email_receiver.rabbitmq_service import RabbitMQService
+from email_receiver.email_receiver import EmailReceiver
+from email_receiver.email_handler import email_handler
+from config import RABBITMQ
 
 if __name__ == "__main__":
-    # Connection URL using RabbitMQ and Docker credentials
-    RABBIT_URL = "amqp://GabrielP:2146@localhost:5672/"  # Replace 'localhost' with 'rabbit' for Docker
-    QUEUE_NAME = "email_queue"
-
-    # Create instances
-    rabbit_service = RabbitMQService(RABBIT_URL, QUEUE_NAME)
+    # Usa la configuración para inicializar el servicio
+    rabbit_service = RabbitMQService(RABBITMQ["URL"], RABBITMQ["QUEUE_NAME"])
     email_receiver = EmailReceiver(rabbit_service, email_handler)
 
-    # Start consuming emails
     try:
         email_receiver.start_receiving()
     except Exception as e:
